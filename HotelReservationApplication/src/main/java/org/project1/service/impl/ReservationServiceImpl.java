@@ -10,11 +10,11 @@ import java.util.*;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
-    private final Map<String, IRoom> rooms;
+    private final Set<IRoom> rooms;
     private final Set<Reservation> reservations;
 
     public ReservationServiceImpl() {
-        this.rooms = new HashMap<>();
+        this.rooms = new HashSet<>();
         reservations = new HashSet<>();
     }
 
@@ -25,11 +25,12 @@ public class ReservationServiceImpl implements ReservationService {
      * @throws IllegalArgumentException if a room with the same ID already exists
      */
     @Override
-    public void addRoom(IRoom room) {
-        if (rooms.containsKey(room.getRoomNumber())) {
-            throw new IllegalArgumentException("Room number " + room.getRoomNumber() + " already exists");
+    public boolean addRoom(IRoom room) {
+        if (rooms.contains(room)) {
+            return false;
         } else {
-            rooms.put(room.getRoomNumber(), room);
+            rooms.add(room);
+            return true;
         }
     }
 
@@ -41,12 +42,16 @@ public class ReservationServiceImpl implements ReservationService {
      * @throws IllegalArgumentException if there is no room with supplied ID
      */
     @Override
-    public IRoom getARoom(String roomId) {
-        if (rooms.containsKey(roomId)) {
-            return rooms.get(roomId);
-        } else {
-            throw new IllegalArgumentException("There is no room with number " + roomId);
+    public IRoom getARoom(String roomId) throws Exception {
+        try {
+            return rooms.stream()
+                    .filter(r -> roomId.equals(r.getRoomNumber()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("There is no room with number " + roomId));
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
         }
+
     }
 
     /**
@@ -80,7 +85,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
         // Copy all rooms
-        Map<String, IRoom> availableRooms = new HashMap<>(this.rooms);
+        Set<IRoom> availableRooms = new HashSet<>(this.rooms);
 
         // Compare with dates of existing reservations
         for (Reservation aReservation : this.reservations) {
@@ -88,11 +93,11 @@ public class ReservationServiceImpl implements ReservationService {
                     checkOutDate);
             if (!checkResult) {
                 // Remove the room from the list of available rooms
-                availableRooms.remove(aReservation.getRoom().getRoomNumber());
+                availableRooms.remove(aReservation.getRoom());
             }
         }
 
-        return new ArrayList<>(availableRooms.values());
+        return new ArrayList<>(availableRooms);
     }
 
     /**
@@ -119,7 +124,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @return map of rooms
      */
     @Override
-    public Map<String, IRoom> getRooms() {
+    public Set<IRoom> getRooms() {
         return rooms;
     }
 

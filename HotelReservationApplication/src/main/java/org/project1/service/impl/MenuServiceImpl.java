@@ -58,8 +58,7 @@ public class MenuServiceImpl implements MenuService {
         }
 
         // Get customer's reservations
-        Collection<Reservation> customerReservations =
-                hotelResource.getCustomersReservations(email);
+        Collection<Reservation> customerReservations = hotelResource.getCustomersReservations(email);
 
         // Display customer's reservations
         if (customerReservations.isEmpty()) {
@@ -164,7 +163,7 @@ public class MenuServiceImpl implements MenuService {
      * customer with the email from the input is already registered.
      */
     @Override
-    public void findAndReserveARoom() {
+    public void findAndReserveARoom() throws Exception {
         boolean keepFindingAndReservingARoom = true;
         while (keepFindingAndReservingARoom) {
 

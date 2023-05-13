@@ -90,7 +90,7 @@ public class AdminServiceImpl implements AdminService {
         List<IRoom> newRooms = new ArrayList<>();
         boolean keepAddingRooms = true;
         while (keepAddingRooms) {
-            String roomNumber = readRoomNumber(newRooms);
+            String roomNumber = readRoomNumber();
             RoomType roomType = readRoomType();
             if (RoomType.FREE.equals(roomType)) {
                 newRooms.add(new FreeRoom(roomNumber, roomType));
@@ -104,7 +104,7 @@ public class AdminServiceImpl implements AdminService {
         System.out.println("Rooms were successfully added");
     }
 
-    private String readRoomNumber(List<IRoom> newRooms) {
+    private String readRoomNumber() {
         System.out.println("Enter room number");
         String input = "";
         boolean isBadRoomNumber = true;
@@ -114,22 +114,9 @@ public class AdminServiceImpl implements AdminService {
                 System.out.println("Room number should be an integer number");
                 continue;
             }
-            if (!isNewRoomNumber(newRooms, input)) {
-                System.out.println("You have already added a room with room number " + input);
-            } else {
-                isBadRoomNumber = false;
-            }
+            isBadRoomNumber = false;
         }
         return input;
-    }
-
-    private boolean isNewRoomNumber(List<IRoom> newRooms, String roomNumber) {
-        for (IRoom aRoom : newRooms) {
-            if (aRoom.getRoomNumber().equals(roomNumber)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     private double readRoomPrice() {

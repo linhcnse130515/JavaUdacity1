@@ -36,8 +36,9 @@ public class Room implements IRoom {
         if (!(o instanceof Room)) {
             return false;
         }
-        return (roomNumber == null && this.getRoomNumber() == null) ||
-                (roomNumber != null && roomNumber.equals(this.getRoomNumber()));
+        Room otherRoom = (Room) o;
+        return (roomNumber == null && otherRoom.getRoomNumber() == null) ||
+                ((otherRoom.getRoomNumber().equals(roomNumber)) && otherRoom.getRoomType().equals(roomType));
     }
 
     @Override

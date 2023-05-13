@@ -59,7 +59,7 @@ public class HotelResource {
      * @param roomNumber    string with the number of the required room
      * @return              iRoom object of the room with the supplied number
      */
-    public IRoom getRoom(String roomNumber) {
+    public IRoom getRoom(String roomNumber) throws Exception {
         return reservationService.getARoom(roomNumber);
     }
 

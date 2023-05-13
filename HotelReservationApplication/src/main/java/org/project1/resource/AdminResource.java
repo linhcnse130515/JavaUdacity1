@@ -40,7 +40,9 @@ public class AdminResource {
     public void addRoom(List<IRoom> rooms) {
 
         for (IRoom newRoom: rooms) {
-            reservationService.addRoom(newRoom);
+            if (!reservationService.addRoom(newRoom)) {
+                System.out.println("You have already added a room with room number " + newRoom.getRoomNumber());
+            };
         }
     }
 
@@ -51,8 +53,8 @@ public class AdminResource {
      */
     public Collection<IRoom> getAllRooms() {
 
-        Map<String, IRoom> allRooms = reservationService.getRooms();
-        return new ArrayList<>(allRooms.values());
+        Set<IRoom> allRooms = reservationService.getRooms();
+        return new ArrayList<>(allRooms);
     }
 
     /**
