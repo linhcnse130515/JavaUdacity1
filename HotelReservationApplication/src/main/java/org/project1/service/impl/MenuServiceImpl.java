@@ -288,14 +288,19 @@ public class MenuServiceImpl implements MenuService {
             checkOut = shiftDate(checkOut);
 
             // Find rooms available for shifted dates
-            availableRooms = hotelResource.findARoom(checkIn, checkOut);
+            Collection<IRoom> incomingRooms = hotelResource.findARoom(checkIn, checkOut);
 
-            if (availableRooms.isEmpty()) {
+            if (incomingRooms.isEmpty()) {
                 System.out.println("No free rooms in the next 7 days found. Try different dates");
             } else {
                 // Print shifted dates and available rooms
-                System.out.println("You can book following rooms from " + checkIn + " till " + checkOut + ":");
-                for (IRoom aRoom : availableRooms) {
+                Date minAvailableDay = hotelResource.findMinAvailableDay();
+                if (minAvailableDay.before(checkIn)) {
+                    checkOut = new Date(checkOut.getTime() - checkIn.getTime() + minAvailableDay.getTime());
+                    checkIn = minAvailableDay;
+                }
+                System.out.println("You can book following rooms from " + checkIn + " to " + checkOut + ":");
+                for (IRoom aRoom : incomingRooms) {
                     System.out.println(aRoom);
                 }
             }

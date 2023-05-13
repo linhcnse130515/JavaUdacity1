@@ -17,4 +17,5 @@ public interface ReservationService {
     Collection<Reservation> getCustomersReservation(Customer customer);
     Map<String, IRoom> getRooms();
     Set<Reservation> getAllReservations();
+    Date findMinAvailableDay();
 }

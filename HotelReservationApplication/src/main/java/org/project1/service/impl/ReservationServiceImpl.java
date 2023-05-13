@@ -133,6 +133,17 @@ public class ReservationServiceImpl implements ReservationService {
         return reservations;
     }
 
+    @Override
+    public Date findMinAvailableDay() {
+        if (!reservations.isEmpty()) {
+            Reservation min = reservations.stream()
+                    .min((o1, o2) -> (int) (o1.getCheckOutDate().getTime() - o2.getCheckOutDate().getTime()))
+                    .get();
+            return min.getCheckOutDate();
+        }
+        return null;
+    }
+
     /**
      * Checks if the supplied reservation conflicts with the supplied check-in and check-out dates.
      *
