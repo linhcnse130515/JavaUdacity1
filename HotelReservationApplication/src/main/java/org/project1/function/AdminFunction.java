@@ -9,7 +9,6 @@ import java.util.Scanner;
 @Component
 public class AdminFunction {
     private final AdminService adminService;
-    private static final Scanner scanner = new Scanner(System.in);
 
     public AdminFunction(AdminService adminService) {
         this.adminService = adminService;
@@ -20,7 +19,7 @@ public class AdminFunction {
         while (keepRunning) {
             try {
                 adminService.printMenu();
-                int input = Integer.parseInt(scanner.nextLine());
+                int input = Integer.parseInt(ApplicationFunction.scanner.nextLine());
                 switch (input) {
                     case 1:
                         adminService.showAllCustomers();

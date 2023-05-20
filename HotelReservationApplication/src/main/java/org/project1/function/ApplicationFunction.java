@@ -11,7 +11,7 @@ public class ApplicationFunction {
 
     private final AdminFunction adminFunction;
     private final MenuService menuService;
-    private static final Scanner scanner = new Scanner(System.in);
+    public static final Scanner scanner = new Scanner(System.in);
 
     public ApplicationFunction(AdminFunction adminFunction, MenuService menuService) {
         this.adminFunction = adminFunction;
